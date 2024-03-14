@@ -1,6 +1,6 @@
 import azure.functions as func
 import logging
-import pyodbc
+# import pyodbc
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -12,7 +12,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     server = 'tcp:lps-sqlserver-test.database.windows.net,1433'
     username = 'terrencechan0830'
     password = 'Qa74ze7rqa74ze1r!'
-    connection_string = f'Driver={driver};Server={server};Database={database};Uid={username};Pwd={password};Encrypt=Yes;TrustServerCertificate=no;Connection Timeout=300;'
+    # connection_string = f'Driver={driver};Server={server};Database={database};Uid={username};Pwd={password};Encrypt=Yes;TrustServerCertificate=no;Connection Timeout=300;'
 
     # Retrieve values from the request body
     name_val = req.params.get('nameval')
@@ -26,13 +26,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             skill_val = req_body.get('skillval')
             date_val = req_body.get('dateval')
 
-    with pyodbc.connect(connection_string) as conn:
-        with conn.cursor() as cursor:
-            insert_query = "INSERT INTO [Skill] (Name, Skill, acq_date) VALUES (?, ?, ?)"
-            values = (name_val, skill_val, date_val)
+    # with pyodbc.connect(connection_string) as conn:
+    #     with conn.cursor() as cursor:
+    #         insert_query = "INSERT INTO [Skill] (Name, Skill, acq_date) VALUES (?, ?, ?)"
+    #         values = (name_val, skill_val, date_val)
 
-            cursor.execute(insert_query, values)
-            conn.commit()
+    #         cursor.execute(insert_query, values)
+    #         conn.commit()
 
     if name_val or skill_val or date_val:
         return func.HttpResponse(f"The following record has been inserted into database: {name_val}, {skill_val}, {date_val}.")
