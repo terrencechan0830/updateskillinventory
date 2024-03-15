@@ -1,7 +1,7 @@
 import azure.functions as func
 import logging
 import pyodbc
-from datetime import datetime, time
+from datetime import datetime
 
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
@@ -24,24 +24,23 @@ def updateskillinventory(req: func.HttpRequest) -> func.HttpResponse:
         except ValueError:
             pass
         else:
+            cat_val = req_body.get('catval')
             name_val = req_body.get('nameval')
-            skill_val = req_body.get('skillval')
-            date_val = req_body.get('dateval')
-
-            # default_time = time(0, 0, 0)
-            # parsed_date = datetime.strptime(date_val, "%Y-%m-%d").replace(time=default_time)
-            # sql_datetime = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
+            ivt_val = req_body.get('ivtval')
+            date_val = datetime.strptime(req_body.get('dateval'), "%d/%m/%Y").strftime("%Y-%m-%dT%H:%M:%S")
 
     with pyodbc.connect(connection_string) as conn:
         with conn.cursor() as cursor:
-            insert_query = "INSERT INTO [Skill] (Name, Skill, acq_date) VALUES (?, ?, ?)"
-            values = (name_val, skill_val, date_val)
-
+            if cat_val == 'Skill':
+                insert_query = "INSERT INTO [Skill] (Name, Skill, acq_date) VALUES (?, ?, ?)"
+            if cat_val == 'Certificate':
+                insert_query = "INSERT INTO [Certificate] (Name, Certificate, acq_date) VALUES (?, ?, ?)"
+            values = (name_val, ivt_val, date_val)
             cursor.execute(insert_query, values)
             conn.commit()
 
-    if name_val or skill_val or date_val:
-        return func.HttpResponse(f"The following record has been inserted into database: {name_val}, {skill_val}, {date_val}.")
+    if name_val or ivt_val or date_val:
+        return func.HttpResponse(f"The following record has been inserted into database: {name_val}, {ivt_val}, {date_val}.")
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
