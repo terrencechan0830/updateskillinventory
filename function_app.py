@@ -1,6 +1,8 @@
 import azure.functions as func
 import logging
 import pyodbc
+from datetime import datetime, time
+
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -25,6 +27,11 @@ def updateskillinventory(req: func.HttpRequest) -> func.HttpResponse:
             name_val = req_body.get('nameval')
             skill_val = req_body.get('skillval')
             date_val = req_body.get('dateval')
+
+            default_time = time(0, 0, 0)
+            parsed_date = datetime.strptime(date_val, "%Y-%m-%d").replace(time=default_time)
+            sql_datetime = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
+            print(sql_datetime)
 
     with pyodbc.connect(connection_string) as conn:
         with conn.cursor() as cursor:
