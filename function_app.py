@@ -31,12 +31,11 @@ def updateskillinventory(req: func.HttpRequest) -> func.HttpResponse:
             default_time = time(0, 0, 0)
             parsed_date = datetime.strptime(date_val, "%Y-%m-%d").replace(time=default_time)
             sql_datetime = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
-            print(sql_datetime)
 
     with pyodbc.connect(connection_string) as conn:
         with conn.cursor() as cursor:
             insert_query = "INSERT INTO [Skill] (Name, Skill, acq_date) VALUES (?, ?, ?)"
-            values = (name_val, skill_val, date_val)
+            values = (name_val, skill_val, sql_datetime)
 
             cursor.execute(insert_query, values)
             conn.commit()
