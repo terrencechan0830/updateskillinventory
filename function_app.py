@@ -11,10 +11,10 @@ def updateskillinventory(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     driver = "{ODBC Driver 18 for SQL Server}"
-    database = 'lps-sqldb-copilot-test'
-    server = 'tcp:lps-sqlserver-test.database.windows.net,1433'
-    username = 'terrencechan0830'
-    password = 'Qa74ze7rqa74ze1r!'
+    server = 'tcp:lps-ad-sql-server-2024jan.database.windows.net,1433'
+    database = 'sql-database'
+    username = 'CloudSA9d60b0b0'
+    password = '@dmin2024'
     connection_string = f'Driver={driver};Server={server};Database={database};Uid={username};Pwd={password};Encrypt=Yes;TrustServerCertificate=no;Connection Timeout=300;'
 
     name_val = req.params.get('nameval')
