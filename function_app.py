@@ -2,6 +2,8 @@ import azure.functions as func
 import logging
 import pyodbc
 from datetime import datetime
+import os
+from openai import AzureOpenAI
 
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
@@ -46,9 +48,6 @@ def updateskillinventory(req: func.HttpRequest) -> func.HttpResponse:
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
              status_code=200
         )
-
-import os
-from openai import AzureOpenAI
 
 @app.route(route="LD_copilot")
 def LD_reply(req: func.HttpRequest):
