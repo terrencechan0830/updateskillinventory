@@ -6,4 +6,3 @@ azure-functions
 pyodbc==5.1.0
 datetime
 openai
-os
